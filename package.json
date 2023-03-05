@@ -1,0 +1,25 @@
+{
+  "name": "gmodsupervisor",
+  "version": "0.0.1",
+  "description": "A Website for Gmod Supervision",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexandreSama/GmodSupervisor.git"
+  },
+  "author": "AlexSama",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexandreSama/GmodSupervisor/issues"
+  },
+  "homepage": "https://github.com/AlexandreSama/GmodSupervisor#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql": "^2.18.1"
+  }
+}

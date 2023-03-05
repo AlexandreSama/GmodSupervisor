@@ -1,0 +1,7 @@
+{
+    "hostname": "localhost",
+    "password": "",
+    "username": "root",
+    "port": 3306,
+    "database": "gmodsupervisor"
+}
