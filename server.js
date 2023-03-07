@@ -5,6 +5,8 @@ const path = require('path');
 const app = express();
 const config = require('./config.json')
 
+app.set('view engine', 'pug')
+app.set('views', './pages')
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -24,13 +26,8 @@ var connection = mysql.createConnection({
 
 connection.connect()
 
-// Route to Homepage
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/pages/index.html'));
-});
-
 // Route to Login Page
-app.get('/login', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/pages/login.html'));
 });
 
@@ -58,8 +55,8 @@ app.post('/auth', (req, res) => {
 			res.end();
 		});
 	} else {
-		response.send('Veuillez entrer un mot de passe et/ou un pseudonyme!');
-		response.end();
+		res.send('Veuillez entrer un mot de passe et/ou un pseudonyme!');
+		res.end();
 	}
 });
 
@@ -67,15 +64,15 @@ app.get('/home', function(request, response) {
 	// If the user is loggedin
 	if (request.session.loggedin) {
 		// Output username
-		response.send('Bonjour, ' + request.session.username + '!');
+		response.render('home', {title: `Bonjour ${request.session.username}`, message: 'Salut toi !'})
 	} else {
 		// Not logged in
 		response.send('Connecte toi d\'abord avant de venir ici !');
 	}
-	response.end();
+	// response.end();
 });
 
-const port = 3000 // Port we will listen on
+const port = 80 // Port we will listen on
 
 // Function to listen on the port
 app.listen(port, () => console.log(`This app is listening on port ${port}`));
