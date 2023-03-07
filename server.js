@@ -72,7 +72,7 @@ app.get('/home', function(request, response) {
 	// response.end();
 });
 
-const port = 80 // Port we will listen on
+const port = 3004 // Port we will listen on
 
 // Function to listen on the port
 app.listen(port, () => console.log(`This app is listening on port ${port}`));
