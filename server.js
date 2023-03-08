@@ -25,7 +25,11 @@ var connection = mysql.createConnection({
     port: 3306
 });
 
-connection.connect()
+connection.connect(err => {
+	if(err){
+		console.log(err.message)
+	}
+})
 
 // Route to Login Page
 app.get('/', (req, res) => {

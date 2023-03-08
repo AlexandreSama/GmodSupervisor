@@ -1,7 +1,7 @@
 {
-    "hostname": "phpmyadmin.kashir.fr",
-    "password": "alexandre123Sa",
-    "username": "root",
+    "hostname": "45.147.98.228",
+    "password": "gmodsupervisor",
+    "username": "gmodsupervisor",
     "port": 3306,
     "database": "gmodsupervisor"
 }
