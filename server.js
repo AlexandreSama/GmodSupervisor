@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 var connection = mysql.createConnection({
     host     : config.hostname,
     user     : config.username,
+	password: config.password,
     database : config.database,
     supportBigNumbers: true,
     port: 3306
