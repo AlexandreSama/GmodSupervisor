@@ -5,8 +5,8 @@ const path = require('path');
 const app = express();
 const config = require('./config.json')
 
-app.set('view engine', 'pug')
-app.set('views', './pages')
+app.set('views', 'views');
+app.set('view engine', 'ejs');
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -33,12 +33,13 @@ connection.connect(err => {
 
 // Route to Login Page
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/pages/login.html'));
+    res.render('pages/login');
 });
 
 app.post('/auth', (req, res) => {
   // Insert Login Code Here
   // Capture the input fields
+  console.log(req.body)
 	let username = req.body.username;
 	let password = req.body.password;
 	// Ensure the input fields exists and are not empty
@@ -65,11 +66,59 @@ app.post('/auth', (req, res) => {
 	}
 });
 
+app.get('/register', function(req, res){
+	res.render('pages/register')
+})
+
+app.post('/register_user', function(req, res){
+	let username = req.body.username;
+	let password = req.body.password;
+	let email = req.body.email
+	// Ensure the input fields exists and are not empty
+	if (username && password && email) {
+		// Execute SQL query that'll select the account from the database based on the specified username and password
+		connection.query('SELECT * FROM users WHERE email = ?', [email], function(error, results, fields) {
+			// If there is an issue with the query, output the error
+			if (error) throw error;
+			// If the account exists
+			if (results.length > 0) {
+				res.send('Cet email est déjà utilisé !')
+			} else {
+				connection.query(`INSERT INTO users (username, password, email) VALUES ("${username}", "${password}", "${email}")`, function(err, result){
+					if(err){
+						res.send('Il y a un souci avec la BDD, revenez plus tard')
+					}
+					if(result){
+						req.session.loggedin = true;
+					req.session.username = username;
+					res.redirect('/home');
+					}
+				})
+			}			
+			res.end();
+		});
+	} else {
+		res.send('Veuillez entrer un mot de passe et/ou un pseudonyme!');
+		res.end();
+	}
+})
+
+app.get('/logout', function(req, res){
+	if(req.session.loggedin = true){
+		req.session.loggedin = false;
+		res.redirect('/')
+	}else{
+		res.send('Il faudrait que tu sois connecté pour ca !')
+	}
+})
+
 app.get('/home', function(request, response) {
 	// If the user is loggedin
 	if (request.session.loggedin) {
 		// Output username
-		response.render('home', {title: `Bonjour ${request.session.username}`, message: 'Salut toi !'})
+		response.render('pages/home', {
+			username: request.session.username,
+		  })
 	} else {
 		// Not logged in
 		response.send('Connecte toi d\'abord avant de venir ici !');
