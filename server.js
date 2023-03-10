@@ -74,28 +74,26 @@ app.post('/register_user', function(req, res){
 	let username = req.body.username;
 	let password = req.body.password;
 	let email = req.body.email
+	let steamid = req.body.steamid
 	// Ensure the input fields exists and are not empty
-	if (username && password && email) {
+	if (username && password && email && steamid) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
 		connection.query('SELECT * FROM users WHERE email = ?', [email], function(error, results, fields) {
 			// If there is an issue with the query, output the error
 			if (error) throw error;
 			// If the account exists
-			if (results.length > 0) {
-				res.send('Cet email est déjà utilisé !')
-			} else {
-				connection.query(`INSERT INTO users (username, password, email) VALUES ("${username}", "${password}", "${email}")`, function(err, result){
+			if (results.length == 0) {
+				connection.query(`INSERT INTO users (username, password, email, steamid) VALUES ("${username}", "${password}", "${email}", "${steamid}")`, function(err, result){
 					if(err){
 						res.send('Il y a un souci avec la BDD, revenez plus tard')
 					}
 					if(result){
 						req.session.loggedin = true;
-					req.session.username = username;
-					res.redirect('/home');
+						req.session.username = username;
+						res.redirect('/home');
 					}
 				})
-			}			
-			res.end();
+			}
 		});
 	} else {
 		res.send('Veuillez entrer un mot de passe et/ou un pseudonyme!');
