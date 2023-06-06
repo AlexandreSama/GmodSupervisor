@@ -1,7 +1,7 @@
 {
-    "hostname": "45.147.98.228",
-    "password": "gmodsupervisorsymfony",
-    "username": "gmodsupervisorsymfony",
+    "hostname": "test",
+    "password": "test",
+    "username": "test",
     "port": 3306,
     "database": "gmodsupervisor"
 }
